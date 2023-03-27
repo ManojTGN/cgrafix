@@ -29,6 +29,14 @@ typedef struct FRAME{
 } _grafixFrameBuffer;
 
 
+extern _grafixFrameBuffer BUFFERS[MAX_WINDOW];
+
+//from shapes.h (will be removed after solving the implicit warning)
+void drawGrafixLine(grafixWindow, int, int, int, int, grafixColor);
+void drawGrafixRect(grafixWindow, int, int, int, int, grafixColor);
+void drawGrafixCircle(grafixWindow, int, int, int, grafixColor);
+
+
 void grafixInit();
 
 void showGrafixWindow(grafixWindow);

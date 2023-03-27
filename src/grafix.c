@@ -55,8 +55,10 @@ grafixWindow createGrafixWindow(int WIDTH, int HEIGHT, char* NAME){
 }
 
 void endGrafixWindow(grafixWindow window){
+
     ReleaseDC(window._hwnd, window._hdc);
     free(BUFFERS[window.id].frameBuffer);
+    
 }
 
 void showGrafixWindow(grafixWindow window){
