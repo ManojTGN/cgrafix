@@ -1,0 +1,6 @@
+
+test/
+build/
+
+makefile
+cmakelists.txt
