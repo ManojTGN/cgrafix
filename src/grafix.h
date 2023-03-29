@@ -3,6 +3,7 @@
 
 #include "shapes.h"
 #include "time.h"
+#include "event.h"
 
 #ifndef GRAFIX_H
 #define GRAFIX_H
@@ -19,9 +20,11 @@ typedef struct WINDOW{
     int id;
     int height;
     int width;
+    int isDead;
 
     HDC _hdc;
     HWND _hwnd;
+    char* _cname;
     WNDCLASS _wc;
 } grafixWindow;
 
@@ -31,7 +34,7 @@ typedef struct FRAME{
     BITMAPINFO bmi;
 } _grafixFrameBuffer;
 
-extern grafixWindow WINDOWS[MAX_WINDOW];
+extern grafixWindow* WINDOWS[MAX_WINDOW];
 extern _grafixFrameBuffer BUFFERS[MAX_WINDOW];
 
 void grafixInit();
@@ -41,7 +44,9 @@ void hideGrafixWindow(grafixWindow);
 void fillGrafixWindow(grafixWindow, grafixColor);
 
 void updateGrafixWindow(grafixWindow);
-grafixWindow createGrafixWindow(int, int, char*);
+void createGrafixWindow(grafixWindow*, int, int, char*);
+
+int isGrafixWindowEnded(grafixWindow);
 void endGrafixWindow(grafixWindow);
 
 
