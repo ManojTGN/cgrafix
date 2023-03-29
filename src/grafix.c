@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <windows.h>
 
 #include "grafix.h"
+#include "time.h"
+#include <time.h>
 
 int ID = 0;
 grafixWindow WINDOWS[MAX_WINDOW];
@@ -29,9 +29,9 @@ grafixWindow createGrafixWindow(int WIDTH, int HEIGHT, char* NAME){
 
     window._wc = wc;
     window._hwnd = CreateWindow("GrafixClass_"+window.id, NAME, WS_OVERLAPPEDWINDOW, 100, 100, WIDTH, HEIGHT, NULL, NULL, GetModuleHandle(NULL), NULL);
-
+    window._hdc = GetDC(window._hwnd);
+    
     WINDOWS[window.id] = window;
-    WINDOWS[window.id]._hdc = GetDC(window._hwnd);
 
     _grafixFrameBuffer frame;
     frame.id = window.id;
@@ -49,6 +49,21 @@ grafixWindow createGrafixWindow(int WIDTH, int HEIGHT, char* NAME){
     bmi.bmiHeader.biCompression = BI_RGB;
 
     BUFFERS[frame.id].bmi = bmi;
+
+
+    _grafixTIME time;
+    time.id = window.id;
+    time._tps = 0;
+    time._limitTps = 0;
+    time._msPerFrame = 0;
+    time._waitCounter = 0;
+    time._startCounter = clock();
+    
+    // QueryPerformanceCounter(&TIMES[time.id]._startCounter);
+    // QueryPerformanceFrequency(&TIMES[time.id]._frequency);
+
+    TIMES[time.id] = time;
+
 
     return window;
 
@@ -96,4 +111,5 @@ void updateGrafixWindow(grafixWindow window){
     BUFFERS[window.id].bmi = bmi;
 
     SetDIBitsToDevice(WINDOWS[window.id]._hdc, 0, 0, window.width, window.height, 0, 0, 0, window.height, BUFFERS[window.id].frameBuffer, &BUFFERS[window.id].bmi, DIB_RGB_COLORS);
+
 }

@@ -1,6 +1,9 @@
 #include <windows.h>
 #include <stdio.h>
 
+#include "shapes.h"
+#include "time.h"
+
 #ifndef GRAFIX_H
 #define GRAFIX_H
 
@@ -28,14 +31,8 @@ typedef struct FRAME{
     BITMAPINFO bmi;
 } _grafixFrameBuffer;
 
-
+extern grafixWindow WINDOWS[MAX_WINDOW];
 extern _grafixFrameBuffer BUFFERS[MAX_WINDOW];
-
-//from shapes.h (will be removed after solving the implicit warning)
-void drawGrafixLine(grafixWindow, int, int, int, int, grafixColor);
-void drawGrafixRect(grafixWindow, int, int, int, int, grafixColor);
-void drawGrafixCircle(grafixWindow, int, int, int, grafixColor);
-
 
 void grafixInit();
 
@@ -46,5 +43,6 @@ void fillGrafixWindow(grafixWindow, grafixColor);
 void updateGrafixWindow(grafixWindow);
 grafixWindow createGrafixWindow(int, int, char*);
 void endGrafixWindow(grafixWindow);
+
 
 #endif /* GRAFIX_H */

@@ -1,6 +1,5 @@
 #include "shapes.h"
 
-
 void _setPixel(grafixWindow window, int x, int y, grafixColor color){
     
     int index = (x + y * window.width) * 3;

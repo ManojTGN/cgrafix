@@ -1,9 +1,9 @@
 #include <windows.h>
 
-#include "grafix.h"
-
 #ifndef SHAPES_H
 #define SHAPES_H
+
+#include "grafix.h"
 
 void _setPixel(grafixWindow, int, int, grafixColor);
 void drawGrafixLine(grafixWindow, int, int, int, int, grafixColor color);
