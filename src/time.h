@@ -1,10 +1,9 @@
-#include <windows.h>
-#include <time.h>
 
 #ifndef TIME_H
 #define TIME_H
 
 #include "grafix.h"
+#include <time.h>
 
 typedef struct TIME{
     int id;
@@ -20,7 +19,7 @@ typedef struct TIME{
     int _msPerFrame;
     int _limitTps;
     int _tps;
-
+    
     clock_t _startCounter;
     clock_t _endCounter;
     int _waitCounter;

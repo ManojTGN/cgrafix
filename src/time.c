@@ -1,5 +1,7 @@
 #include "time.h"
+
 #include <math.h>
+#include <time.h>
 
 _grafixTIME TIMES[MAX_WINDOW];
 
@@ -16,13 +18,15 @@ void dev_DEBUG_TIME(grafixWindow window){
 }
 
 int getGrafixFPS(grafixWindow window){
+    if( window.isDead ) return -1;
 
     return TIMES[window.id]._tps;
 
 }
 
 void tickGrafix(grafixWindow window, int tick){
-    
+    if( window.isDead ) return;
+
     if(TIMES[window.id]._limitTps != tick){
         TIMES[window.id]._limitTps = tick;
     }
@@ -34,6 +38,7 @@ void tickGrafix(grafixWindow window, int tick){
 }
 
 void updateGrafixTime(grafixWindow window){
+    if( window.isDead ) return;
 
     TIMES[window.id]._endCounter = clock();
     TIMES[window.id]._msPerFrame = TIMES[window.id]._endCounter - TIMES[window.id]._startCounter;

@@ -1,6 +1,7 @@
 
 #include "grafix.h"
 #include "time.h"
+
 #include <time.h>
 
 int ID = 0;
@@ -11,7 +12,6 @@ void grafixInit(){
 
     printf("\nInitiated Grafix!\n");
     
-
 }
 
 void createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
@@ -73,6 +73,7 @@ void createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME)
 }
 
 void endGrafixWindow(grafixWindow window){
+    if( window.isDead ) return;
 
     ReleaseDC(window._hwnd, window._hdc);
     free(BUFFERS[window.id].frameBuffer);
@@ -83,18 +84,21 @@ void endGrafixWindow(grafixWindow window){
 }
 
 void showGrafixWindow(grafixWindow window){
+    if( window.isDead ) return;
 
     ShowWindow(window._hwnd, SW_SHOWDEFAULT);
 
 }
 
 void hideGrafixWindow(grafixWindow window){
+    if( window.isDead ) return;
     
     ShowWindow(window._hwnd, SW_HIDE);
 
 }
 
 void fillGrafixWindow(grafixWindow window, grafixColor color){
+    if( window.isDead ) return;
 
     for(int i = 0; i < window.height * window.width * 3; i+=3){
         BUFFERS[window.id].frameBuffer[i] = color.green;

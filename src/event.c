@@ -10,7 +10,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
         if(WINDOWS[id] != NULL && WINDOWS[id]->_hwnd == hwnd) break;
     }
 
-    if(id >= MAX_WINDOW) return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    if(id >= MAX_WINDOW) 
+        return DefWindowProc(hwnd, uMsg, wParam, lParam);
 
     switch (uMsg){
     case WM_DESTROY:
@@ -27,14 +28,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 
 void manageGrafixEvent(grafixWindow window){
     
+    if( window.isDead ) return;
+    
     MSG msg = { };
     while(PeekMessage(&msg, window._hwnd, 0, 0, PM_REMOVE) > 0){
-        
-        if (msg.message == WM_DESTROY)
-        {
-            printf("QUIT TRIGGERED");
-            return;
-        }
 
         if (!TranslateAccelerator(window._hwnd, 0, &msg)){
             TranslateMessage(&msg); 
