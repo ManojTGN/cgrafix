@@ -45,17 +45,19 @@ void drawGrafixRect(grafixWindow window, int x, int y, int width, int height, gr
     height = y+height >= window.height? window.height - y : height;
     
     if(fillMode == FM_OUTLINE){
-        drawGrafixLine(window,x,y,x+width,y,color);
-        drawGrafixLine(window,x+width,y,x+width,y+height,color);
-        drawGrafixLine(window,x+width,y+height,x,y+height,color);
-        drawGrafixLine(window,x,y+height,x,y,color);
+        for(int w = owidth; w >= -owidth; w--){
+            drawGrafixLine(window,x-w,y-w,x+width+w,y-w,color);
+            drawGrafixLine(window,x+width+w,y-w,x+width+w,y+height+w,color);
+            drawGrafixLine(window,x+width+w,y+height+w,x-w,y+height+w,color);
+            drawGrafixLine(window,x-w,y+height+w,x-w,y-w,color);
+        }
 
         return;
     }
 
     if(fillMode == FM_FILL){
-        for(int _y = y; _y < y+height; _y++){
-            drawGrafixLine(window,x,_y,x+width,_y,color);
+        for(int _y = y-owidth; _y < y+height+owidth; _y++){
+            drawGrafixLine(window,x-owidth,_y,x+width+owidth,_y,color);
         }
 
         return;
@@ -88,6 +90,11 @@ void drawGrafixCircle(grafixWindow window, int xc, int yc, int r, grafixColor co
                 y--;
             }
             x++;
+        }
+
+        if(owidth == 0) return;
+        for(int w = owidth; w >= -owidth; w--){
+            drawGrafixCircle( window, xc, yc, r+w, color, fillMode, 0);
         }
 
         return;
