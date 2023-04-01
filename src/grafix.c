@@ -10,7 +10,7 @@ _grafixFrameBuffer BUFFERS[MAX_WINDOW];
 
 void grafixInit(){
 
-    printf("\nInitiated Grafix!\n");
+    printf("Initiated Grafix!\n");
     
 }
 
@@ -121,7 +121,7 @@ void updateGrafixWindow(grafixWindow window){
     BUFFERS[window.id].bmi = bmi;
 
     SetDIBitsToDevice(WINDOWS[window.id]->_hdc, 0, 0, window.width, window.height, 0, 0, 0, window.height, BUFFERS[window.id].frameBuffer, &BUFFERS[window.id].bmi, DIB_RGB_COLORS);
-
+    
 }
 
 int isGrafixWindowEnded(grafixWindow window){
