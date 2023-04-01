@@ -1,5 +1,4 @@
 #include <windows.h>
-#include <tchar.h>
 
 #ifndef SHAPES_H
 #define SHAPES_H
@@ -18,6 +17,6 @@ void drawGrafixCircle(grafixWindow, int, int, int, grafixColor, int, int);
 
 //I haven't created a seperate header file
 void drawGrafixImage(grafixWindow, char*, int, int, int, int);
-void drawGrafixText(grafixWindow, int, int, char*, grafixColor);
+void drawGrafixText(grafixWindow, int, int, char*, int, grafixColor);
 
 #endif /* SHAPES_H */

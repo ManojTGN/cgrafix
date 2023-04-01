@@ -132,87 +132,15 @@ void drawGrafixCircle(grafixWindow window, int xc, int yc, int r, grafixColor co
 }
 
 void drawGrafixImage(grafixWindow window, char* imagePath, int x, int y, int width, int height){
-    
-    // HBITMAP hBitmap = LoadBitmapFromFile(imagePath,width,height);
-    // if (!hBitmap) {
-    //     printf("E_0 ");
-    //     return;
-    // }
-
-    // FILE* fp = _wfopen(hBitmap, _T("rb"));
-    // if (!fp){
-    //     printf("E_1 ");
-    //     return;
-    // }
-
-    // fseek(fp, 0, SEEK_END);
-    // int fileSize = ftell(fp);
-    // fseek(fp, 0, SEEK_SET);
-    // unsigned char* fileData = (unsigned char*)malloc(fileSize);
-
-    // if (!fileData) {
-    //     printf("E_2 ");
-    //     fclose(fp);
-    //     return;
-    // }
-
-    // fread(fileData, 1, fileSize, fp);
-    // fclose(fp);
-
-    // BITMAPFILEHEADER* bmfh = (BITMAPFILEHEADER*)fileData;
-    // BITMAPINFOHEADER* bmih = (BITMAPINFOHEADER*)(fileData + sizeof(BITMAPFILEHEADER));
-
-    // if (bmfh->bfType != 'MB' || bmih->biSize != sizeof(BITMAPINFOHEADER)) {
-    //     printf("E_3 ");
-    //     free(fileData);
-    //     return;
-    // }
-
-    // unsigned char* imageData = fileData + bmfh->bfOffBits;
-    // int imageWidth = bmih->biWidth;
-    // int imageHeight = bmih->biHeight;
-    // int imageDepth = bmih->biBitCount / 8;
-
-    // void* bits;
-    // BITMAPINFO bmi = { sizeof(BITMAPINFOHEADER), imageWidth, imageHeight, 1, 24, BI_RGB };
-    // HBITMAP _hBitmap = CreateDIBSection(window._hdc, &bmi, DIB_RGB_COLORS, &bits, NULL, 0);
-
-
-    // unsigned char* data = (unsigned char*)bits;
-    // for (int y = 0; y < imageHeight; y++) {
-    //     for (int x = 0; x < imageWidth; x++) {
-    //         data[(y * imageWidth + x) * 3 + 0] = imageData[(y * imageWidth + x) * imageDepth + 2]; // blue
-    //         data[(y * imageWidth + x) * 3 + 1] = imageData[(y * imageWidth + x) * imageDepth + 1]; // green
-    //         data[(y * imageWidth + x) * 3 + 2] = imageData[(y * imageWidth + x) * imageDepth + 0]; // red
-    //     }
-    // }
-
-    // SetDIBitsToDevice(window._hdc, x, y, width, height, 0, 0, 0, imageHeight, bits, &bmi, DIB_RGB_COLORS);
-
-    // DeleteObject(hBitmap);
-    // DeleteObject(_hBitmap);
-    // free(fileData);
-
+    //todo: read image, put it into the buffer
 }
 
-void drawGrafixText(grafixWindow window, int x, int y, char* text, grafixColor color){
+void drawGrafixText(grafixWindow window, int x, int y, char* text, int fontSize, grafixColor color){
     
-    // HFONT hFont = CreateFont(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
-    //     ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-    //     DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, "Arial");
-    // HFONT hOldFont = (HFONT)SelectObject(window._hdc, hFont);
-
-    // SetTextColor(window._hdc, RGB(color.red, color.green, color.blue));
-    // SetBkColor(window._hdc, TRANSPARENT);
-    
-    // TextOut(window._hdc, x, y, text, strlen(text));
-
-
-    // SelectObject(window._hdc, hOldFont);
-    // DeleteObject(hFont);
-
-
     HDC hdc = CreateCompatibleDC(NULL);
+
+    HFONT hFont = CreateFont(fontSize, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,"Arial");
+    SelectObject(hdc, hFont);
 
     SIZE size;
     GetTextExtentPoint32(hdc, text, strlen(text), &size);
@@ -223,7 +151,7 @@ void drawGrafixText(grafixWindow window, int x, int y, char* text, grafixColor c
     BITMAPINFO bmi = { 0 };
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     bmi.bmiHeader.biWidth = size.cx;
-    bmi.bmiHeader.biHeight = size.cy;
+    bmi.bmiHeader.biHeight = -size.cy;
     bmi.bmiHeader.biPlanes = 1;
     bmi.bmiHeader.biBitCount = 24;
     bmi.bmiHeader.biCompression = BI_RGB;
@@ -233,16 +161,32 @@ void drawGrafixText(grafixWindow window, int x, int y, char* text, grafixColor c
     HBITMAP hBitmap = CreateDIBSection(hdc, &bmi, DIB_RGB_COLORS, (void**)&pixels, NULL, 0);
     HGDIOBJ hOldBitmap = SelectObject(hdc, hBitmap);
 
-    SetBkMode(hdc, TRANSPARENT);
+    if( color.red != 0 && color.green != 0 && color.blue != 0 ){
+        SetBkMode(hdc, TRANSPARENT);
+    }else{
+        SetBkMode(hdc,OPAQUE);
+        SetBkColor(hdc,RGB(255,255,255)); 
+    }
+
     SetTextColor(hdc, RGB(color.red, color.green, color.blue));
     DrawText(hdc, text, -1, &rc, DT_LEFT | DT_TOP);
 
     int index = 0;int pindex = 0;
     for(int i = x; i < x+size.cx; i++){
     for(int j = y; j < y+size.cy; j++){
+        if(i >= window.width || j >= window.height || i < 0 || j < 0 ) continue;
+
         index = (i + j * window.width) * 3;
         pindex = ( (i-x) + (j-y) * size.cx) * 3;
-        //printf("(%d %d) %d %d\n",index, pindex,size.cx,size.cy);
+        
+        if( 
+            ((color.red != 0 && color.green != 0 && color.blue != 0) &&
+            (pixels[pindex] == 0 && pixels[pindex + 1] == 0 && pixels[pindex + 2] == 0)) ||
+            ((color.red == 0 && color.green == 0 && color.blue == 0) &&
+            (pixels[pindex] == 255 && pixels[pindex + 1] == 255 && pixels[pindex + 2] == 255))
+
+        )continue;
+
         BUFFERS[window.id].frameBuffer[index] = pixels[pindex];
         BUFFERS[window.id].frameBuffer[index + 1] = pixels[pindex + 1];
         BUFFERS[window.id].frameBuffer[index + 2] = pixels[pindex + 2];
