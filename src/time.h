@@ -28,12 +28,12 @@ typedef struct TIME{
 
 extern _grafixTIME TIMES[MAX_WINDOW];
 
-int getGrafixFPS(grafixWindow);
-void tickGrafix(grafixWindow, int);
-void waitGrafixWindow(grafixWindow, int);
-void updateGrafixTime(grafixWindow);
+int getGrafixFPS(grafixWindow window);
+void tickGrafix(grafixWindow window, int);
+void waitGrafixWindow(grafixWindow window, int millisecond);
+void updateGrafixTime(grafixWindow window);
 
 //only for dev
-void dev_DEBUG_TIME(grafixWindow);
+void dev_DEBUG_TIME(grafixWindow window);
 
 #endif /* TIME_H */

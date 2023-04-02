@@ -2,22 +2,94 @@
 #include "grafix.h"
 #include "time.h"
 
-#include <time.h>
-
-static int ID;
+static int ID = 0;
+static char grafixError[100];
+static int grafixInitiated = 0;
 grafixWindow* WINDOWS[MAX_WINDOW];
 _grafixFrameBuffer BUFFERS[MAX_WINDOW];
 
 void grafixInit(){
+    if(grafixInitiated) return;
 
     ID = 0;
+    grafixInitiated = 1;
     printf("Initiated Grafix!\n");
     
 }
 
-int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
+int isGrafixInit(){
+
+    return grafixInitiated;
+
+}
+
+
+const char* getGrafixError(){
+
+    const char* error = grafixError;
+    return error;
+
+}
+
+void setGrafixError(char* errorMsg){
+    strcpy(grafixError,errorMsg);
+}
+
+void clearGrafixError(){
+
+    strcpy(grafixError,"");
+
+}
+
+
+void showGrafixWindow(grafixWindow window){
+    if( window.isDead ) return;
+
+    ShowWindow(window._hwnd, SW_SHOWDEFAULT);
+
+}
+
+void hideGrafixWindow(grafixWindow window){
+    if( window.isDead ) return;
     
-    if(ID == MAX_WINDOW) return 0;
+    ShowWindow(window._hwnd, SW_HIDE);
+
+}
+
+void fillGrafixWindow(grafixWindow window, grafixColor color){
+    if( window.isDead ) return;
+
+    for(int i = 0; i < window.height * window.width * 3; i+=3){
+        BUFFERS[window.id].frameBuffer[i] = color.green;
+        BUFFERS[window.id].frameBuffer[i + 1] = color.blue;
+        BUFFERS[window.id].frameBuffer[i + 2] = color.red;
+    }
+    
+}
+
+
+void updateGrafixWindow(grafixWindow window){
+    if( window.isDead ) return;
+
+    BITMAPINFO bmi = { 0 };
+    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth = window.width;
+    bmi.bmiHeader.biHeight = -window.height;
+    bmi.bmiHeader.biPlanes = 1;
+    bmi.bmiHeader.biBitCount = 24;
+    bmi.bmiHeader.biCompression = BI_RGB;
+
+    BUFFERS[window.id].bmi = bmi;
+
+    SetDIBitsToDevice(WINDOWS[window.id]->_hdc, 0, 0, window.width, window.height, 0, 0, 0, window.height, BUFFERS[window.id].frameBuffer, &BUFFERS[window.id].bmi, DIB_RGB_COLORS);
+    
+}
+
+int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
+    if(ID == MAX_WINDOW){
+        strcpy(grafixError, "grafixError:Unable To CreateWindow;reason:Window Limit Reached Maximum(10);");
+        return 0;
+    }
 
     window->id = ID++;
     window->height = HEIGHT;
@@ -41,6 +113,7 @@ int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
     if(window->_hwnd == NULL){
         ID--;
         window = NULL;
+        strcpy(grafixError, "grafixError:Unable To CreateWindow;reason:No Memory Available For Window;");
         return 0;
     }
     
@@ -56,6 +129,7 @@ int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
         ID--;
         free(WINDOWS[window->id]);
         window = NULL;
+        strcpy(grafixError, "grafixError:Unable To CreateWindow;reason:No Memory Available For FrameBuffer;");
         return 0;
     }
 
@@ -88,6 +162,13 @@ int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
 
 }
 
+
+int isGrafixWindowEnded(grafixWindow window){
+
+    return window.isDead;
+
+}
+
 void endGrafixWindow(grafixWindow window){
     if( window.isDead ) return;
 
@@ -100,50 +181,8 @@ void endGrafixWindow(grafixWindow window){
 
 }
 
-void showGrafixWindow(grafixWindow window){
-    if( window.isDead ) return;
+grafixWindow* getGrafixWindow(int id){
 
-    ShowWindow(window._hwnd, SW_SHOWDEFAULT);
-
-}
-
-void hideGrafixWindow(grafixWindow window){
-    if( window.isDead ) return;
-    
-    ShowWindow(window._hwnd, SW_HIDE);
-
-}
-
-void fillGrafixWindow(grafixWindow window, grafixColor color){
-    if( window.isDead ) return;
-
-    for(int i = 0; i < window.height * window.width * 3; i+=3){
-        BUFFERS[window.id].frameBuffer[i] = color.green;
-        BUFFERS[window.id].frameBuffer[i + 1] = color.blue;
-        BUFFERS[window.id].frameBuffer[i + 2] = color.red;
-    }
-    
-}
-
-void updateGrafixWindow(grafixWindow window){
-    if( window.isDead ) return;
-
-    BITMAPINFO bmi = { 0 };
-    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-    bmi.bmiHeader.biWidth = window.width;
-    bmi.bmiHeader.biHeight = -window.height;
-    bmi.bmiHeader.biPlanes = 1;
-    bmi.bmiHeader.biBitCount = 24;
-    bmi.bmiHeader.biCompression = BI_RGB;
-
-    BUFFERS[window.id].bmi = bmi;
-
-    SetDIBitsToDevice(WINDOWS[window.id]->_hdc, 0, 0, window.width, window.height, 0, 0, 0, window.height, BUFFERS[window.id].frameBuffer, &BUFFERS[window.id].bmi, DIB_RGB_COLORS);
-    
-}
-
-int isGrafixWindowEnded(grafixWindow window){
-
-    return window.isDead;
+    return WINDOWS[id];
 
 }

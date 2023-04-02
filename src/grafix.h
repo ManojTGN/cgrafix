@@ -1,5 +1,7 @@
 #include <windows.h>
+#include <string.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "shapes.h"
 #include "time.h"
@@ -35,20 +37,28 @@ typedef struct FRAME{
 } _grafixFrameBuffer;
 
 static int ID;
+static char grafixError[100];
+static int grafixInitiated;
 extern grafixWindow* WINDOWS[MAX_WINDOW];
 extern _grafixFrameBuffer BUFFERS[MAX_WINDOW];
 
 void grafixInit();
+int isGrafixInit();
 
-void showGrafixWindow(grafixWindow);
-void hideGrafixWindow(grafixWindow);
-void fillGrafixWindow(grafixWindow, grafixColor);
+const char* getGrafixError();
+void setGrafixError(char* errorMsg);
+void clearGrafixError();
 
-void updateGrafixWindow(grafixWindow);
-int createGrafixWindow(grafixWindow*, int, int, char*);
+void showGrafixWindow(grafixWindow window);
+void hideGrafixWindow(grafixWindow window);
+void fillGrafixWindow(grafixWindow window, grafixColor color);
 
-int isGrafixWindowEnded(grafixWindow);
-void endGrafixWindow(grafixWindow);
+void updateGrafixWindow(grafixWindow window);
+int createGrafixWindow(grafixWindow* window, int width, int height, char* name);
 
+
+int isGrafixWindowEnded(grafixWindow window);
+void endGrafixWindow(grafixWindow window);
+grafixWindow* getGrafixWindow(int id);
 
 #endif /* GRAFIX_H */

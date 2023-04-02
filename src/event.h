@@ -5,6 +5,6 @@
 #include "grafix.h"
 
 LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
-void manageGrafixEvent(grafixWindow);
+void manageGrafixEvent(grafixWindow window);
 
 #endif /* EVENT_H */

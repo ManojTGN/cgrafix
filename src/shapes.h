@@ -9,14 +9,14 @@
 #define FM_OUTLINE 1
 #define FM_FILL 2
 
-void _setPixel(grafixWindow, int, int, grafixColor);
-void drawGrafixLine(grafixWindow, int, int, int, int, grafixColor color);
+void _setPixel(grafixWindow window, int x, int y, grafixColor color);
+void drawGrafixLine(grafixWindow window, int x1, int y1, int x2, int y2, grafixColor color);
 
-void drawGrafixRect(grafixWindow, int, int, int, int, grafixColor, int, int);
-void drawGrafixCircle(grafixWindow, int, int, int, grafixColor, int, int);
+void drawGrafixRect(grafixWindow window, int x, int y, int width, int height, grafixColor color, int fillMode, int borderWidth);
+void drawGrafixCircle(grafixWindow window, int x, int y, int radius, grafixColor color, int fillMode, int borderWidth);
 
 //I haven't created a seperate header file
-void drawGrafixImage(grafixWindow,const char*, int, int);
-void drawGrafixText(grafixWindow, int, int, char*, int, grafixColor);
+void drawGrafixImage(grafixWindow window, const char* filePath, int x, int y);
+void drawGrafixText(grafixWindow window, int x, int y, char* text, int fontSize, grafixColor color);
 
 #endif /* SHAPES_H */
