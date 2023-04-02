@@ -150,16 +150,15 @@ void drawGrafixImage(grafixWindow window,const char* imagePath, int x, int y){
     int pixelSize = (bitCount == 24) ? 3 : 4;
 
     fseek(image_file, 54, SEEK_SET);
-    for (int _y = 0; _y < height; _y++) {
-        for (int _x = 0; _x < width; _x++) {
-            if(fread(pixel, sizeof(unsigned char), pixelSize, image_file) != pixelSize) break;
-            
-            if (bitCount == 24) 
-            _setPixel(window,x+_x,y+_y,(grafixColor){pixel[0],pixel[1],pixel[2]});
-            else
-            _setPixel(window,x+_x,y+_y,(grafixColor){pixel[0],pixel[1],pixel[2]});//pixel[3]
-            
-        }
+    for (int _y = y+height; _y >= 0 ; _y--) {
+    for (int _x = x; _x < x+width; _x++) {
+        
+        if(fread(pixel, sizeof(unsigned char), pixelSize, image_file) != pixelSize) break;
+        
+        if (bitCount == 24) _setPixel(window,_x,_y,(grafixColor){pixel[2],pixel[1],pixel[0]});
+        else _setPixel(window,_x,_y,(grafixColor){pixel[2],pixel[1],pixel[0]});//pixel[3]
+        
+    }
     }
 
     fclose(image_file);
