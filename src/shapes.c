@@ -131,8 +131,39 @@ void drawGrafixCircle(grafixWindow window, int xc, int yc, int r, grafixColor co
 
 }
 
-void drawGrafixImage(grafixWindow window, char* imagePath, int x, int y, int width, int height){
-    //todo: read image, put it into the buffer
+void drawGrafixImage(grafixWindow window,const char* imagePath, int x, int y){
+    
+    int index = 0;
+    FILE *image_file;
+    unsigned char pixel[4];
+    int width = 0, height = 0;
+    int bitCount = 0;
+
+    image_file = fopen(imagePath, "rb");
+    if (image_file == NULL) return;
+
+    fseek(image_file, 0x0012, SEEK_SET);
+    fread(&width, sizeof(width), 1, image_file);
+    fread(&height, sizeof(height), 1, image_file);
+    fseek(image_file, 0x001C, SEEK_SET);
+    fread(&bitCount, sizeof(bitCount), 1, image_file);
+    int pixelSize = (bitCount == 24) ? 3 : 4;
+
+    fseek(image_file, 54, SEEK_SET);
+    for (int _y = 0; _y < height; _y++) {
+        for (int _x = 0; _x < width; _x++) {
+            if(fread(pixel, sizeof(unsigned char), pixelSize, image_file) != pixelSize) break;
+            
+            if (bitCount == 24) 
+            _setPixel(window,x+_x,y+_y,(grafixColor){pixel[0],pixel[1],pixel[2]});
+            else
+            _setPixel(window,x+_x,y+_y,(grafixColor){pixel[0],pixel[1],pixel[2]});//pixel[3]
+            
+        }
+    }
+
+    fclose(image_file);
+
 }
 
 void drawGrafixText(grafixWindow window, int x, int y, char* text, int fontSize, grafixColor color){
