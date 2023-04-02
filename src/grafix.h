@@ -34,6 +34,7 @@ typedef struct FRAME{
     BITMAPINFO bmi;
 } _grafixFrameBuffer;
 
+static int ID;
 extern grafixWindow* WINDOWS[MAX_WINDOW];
 extern _grafixFrameBuffer BUFFERS[MAX_WINDOW];
 
@@ -44,7 +45,7 @@ void hideGrafixWindow(grafixWindow);
 void fillGrafixWindow(grafixWindow, grafixColor);
 
 void updateGrafixWindow(grafixWindow);
-void createGrafixWindow(grafixWindow*, int, int, char*);
+int createGrafixWindow(grafixWindow*, int, int, char*);
 
 int isGrafixWindowEnded(grafixWindow);
 void endGrafixWindow(grafixWindow);

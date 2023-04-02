@@ -4,18 +4,21 @@
 
 #include <time.h>
 
-int ID = 0;
+static int ID;
 grafixWindow* WINDOWS[MAX_WINDOW];
 _grafixFrameBuffer BUFFERS[MAX_WINDOW];
 
 void grafixInit(){
 
+    ID = 0;
     printf("Initiated Grafix!\n");
     
 }
 
-void createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
+int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
     
+    if(ID == MAX_WINDOW) return 0;
+
     window->id = ID++;
     window->height = HEIGHT;
     window->width = WIDTH;
@@ -27,6 +30,7 @@ void createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME)
     WNDCLASS wc = { 0 };
     wc.lpfnWndProc = WindowProc; // WindowProc; DefWindowProc;
     wc.hInstance = GetModuleHandle(NULL);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND);
     wc.lpszClassName = (*window)._cname;
 
@@ -34,6 +38,12 @@ void createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME)
     RegisterClass( &(window->_wc) );
 
     window->_hwnd = CreateWindow((*window)._cname, NAME, WS_OVERLAPPEDWINDOW, 0, 0, WIDTH, HEIGHT, NULL, NULL, GetModuleHandle(NULL), NULL);
+    if(window->_hwnd == NULL){
+        ID--;
+        window = NULL;
+        return 0;
+    }
+    
     window->_hdc = GetDC(window->_hwnd);
 
     window->isDead = 0;
@@ -42,6 +52,12 @@ void createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME)
     _grafixFrameBuffer frame;
     frame.id = window->id;
     frame.frameBuffer = (unsigned char*)malloc(WIDTH * HEIGHT * 3);
+    if(frame.frameBuffer == NULL){
+        ID--;
+        free(WINDOWS[window->id]);
+        window = NULL;
+        return 0;
+    }
 
     BUFFERS[frame.id] = frame;
 
@@ -77,8 +93,9 @@ void endGrafixWindow(grafixWindow window){
 
     ReleaseDC(window._hwnd, window._hdc);
     free(BUFFERS[window.id].frameBuffer);
-    
+
     DestroyWindow(window._hwnd);
+    free(WINDOWS[window.id]);
     WINDOWS[window.id] = NULL;
 
 }
@@ -109,6 +126,7 @@ void fillGrafixWindow(grafixWindow window, grafixColor color){
 }
 
 void updateGrafixWindow(grafixWindow window){
+    if( window.isDead ) return;
 
     BITMAPINFO bmi = { 0 };
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);

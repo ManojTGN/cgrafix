@@ -1,7 +1,7 @@
 #include "shapes.h"
 
 void _setPixel(grafixWindow window, int x, int y, grafixColor color){
-    if(x >= window.width || y >= window.height || x < 0 || y < 0) return;
+    if(window.isDead  || x >= window.width || y >= window.height || x < 0 || y < 0) return;
 
     int index = (x + y * window.width) * 3;
     BUFFERS[window.id].frameBuffer[index] = color.blue;
@@ -132,7 +132,8 @@ void drawGrafixCircle(grafixWindow window, int xc, int yc, int r, grafixColor co
 }
 
 void drawGrafixImage(grafixWindow window,const char* imagePath, int x, int y){
-    
+    if( window.isDead ) return;
+
     int index = 0;
     FILE *image_file;
     unsigned char pixel[4];
@@ -166,7 +167,8 @@ void drawGrafixImage(grafixWindow window,const char* imagePath, int x, int y){
 }
 
 void drawGrafixText(grafixWindow window, int x, int y, char* text, int fontSize, grafixColor color){
-    
+    if( window.isDead ) return;
+
     HDC hdc = CreateCompatibleDC(NULL);
 
     HFONT hFont = CreateFont(fontSize, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,"Arial");

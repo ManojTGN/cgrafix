@@ -27,7 +27,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 }
 
 void manageGrafixEvent(grafixWindow window){
-    
     if( window.isDead ) return;
     
     MSG msg = { };
