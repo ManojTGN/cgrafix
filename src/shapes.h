@@ -16,7 +16,6 @@ void drawGrafixRect(grafixWindow window, int x, int y, int width, int height, gr
 void drawGrafixCircle(grafixWindow window, int x, int y, int radius, grafixColor color, int fillMode, int borderWidth);
 
 //I haven't created a seperate header file
-void drawGrafixImage(grafixWindow window, const char* filePath, int x, int y);
 void drawGrafixText(grafixWindow window, int x, int y, char* text, int fontSize, grafixColor color);
 
 #endif /* SHAPES_H */

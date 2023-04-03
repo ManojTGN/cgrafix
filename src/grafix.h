@@ -6,6 +6,7 @@
 #include "shapes.h"
 #include "time.h"
 #include "event.h"
+#include "image.h"
 
 #ifndef GRAFIX_H
 #define GRAFIX_H
@@ -36,7 +37,7 @@ typedef struct FRAME{
     BITMAPINFO bmi;
 } _grafixFrameBuffer;
 
-static int ID;
+static int WINDOW_ID;
 static char grafixError[100];
 static int grafixInitiated;
 extern grafixWindow* WINDOWS[MAX_WINDOW];

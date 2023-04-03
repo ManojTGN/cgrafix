@@ -2,7 +2,7 @@
 #include "grafix.h"
 #include "time.h"
 
-static int ID = 0;
+static int WINDOW_ID = 0;
 static char grafixError[100];
 static int grafixInitiated = 0;
 grafixWindow* WINDOWS[MAX_WINDOW];
@@ -11,7 +11,7 @@ _grafixFrameBuffer BUFFERS[MAX_WINDOW];
 void grafixInit(){
     if(grafixInitiated) return;
 
-    ID = 0;
+    WINDOW_ID = 0;
     grafixInitiated = 1;
     printf("Initiated Grafix!\n");
     
@@ -86,12 +86,12 @@ void updateGrafixWindow(grafixWindow window){
 }
 
 int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
-    if(ID == MAX_WINDOW){
+    if(WINDOW_ID == MAX_WINDOW){
         strcpy(grafixError, "grafixError:Unable To CreateWindow;reason:Window Limit Reached Maximum(10);");
         return 0;
     }
 
-    window->id = ID++;
+    window->id = WINDOW_ID++;
     window->height = HEIGHT;
     window->width = WIDTH;
     
@@ -111,7 +111,7 @@ int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
 
     window->_hwnd = CreateWindow((*window)._cname, NAME, WS_OVERLAPPEDWINDOW, 0, 0, WIDTH, HEIGHT, NULL, NULL, GetModuleHandle(NULL), NULL);
     if(window->_hwnd == NULL){
-        ID--;
+        WINDOW_ID--;
         window = NULL;
         strcpy(grafixError, "grafixError:Unable To CreateWindow;reason:No Memory Available For Window;");
         return 0;
@@ -126,9 +126,8 @@ int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
     frame.id = window->id;
     frame.frameBuffer = (unsigned char*)malloc(WIDTH * HEIGHT * 3);
     if(frame.frameBuffer == NULL){
-        ID--;
-        free(WINDOWS[window->id]);
-        window = NULL;
+        WINDOW_ID--;
+        free(WINDOWS[window->id]);window = NULL;
         strcpy(grafixError, "grafixError:Unable To CreateWindow;reason:No Memory Available For FrameBuffer;");
         return 0;
     }
