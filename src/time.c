@@ -1,8 +1,5 @@
 #include "time.h"
 
-#include <math.h>
-#include <time.h>
-
 _grafixTIME TIMES[MAX_WINDOW];
 
 void dev_DEBUG_TIME(grafixWindow window){
@@ -51,20 +48,4 @@ void updateGrafixTime(grafixWindow window){
     TIMES[window.id]._tps = round( (double)1000 / (TIMES[window.id]._msPerFrame + TIMES[window.id]._waitCounter) );
     TIMES[window.id]._startCounter = clock();
     
-    // QueryPerformanceCounter(&TIMES[window.id]._endCounter);
-    
-    // TIMES[window.id]._tmpCounts.QuadPart = TIMES[window.id]._endCounter.QuadPart - TIMES[window.id]._startCounter.QuadPart;
-    // TIMES[window.id]._startCounter = TIMES[window.id]._endCounter;
-    
-    // TIMES[window.id]._tpsCounter.QuadPart = TIMES[window.id]._frequency.QuadPart / TIMES[window.id]._tmpCounts.QuadPart;
-    // TIMES[window.id]._msCounter.QuadPart = ((1000 * TIMES[window.id]._tmpCounts.QuadPart) / TIMES[window.id]._frequency.QuadPart);
-    
-    // printf(
-    //     "counts: %lld frequency: %lld fps: %lld ms: %lld\n",
-    //     TIMES[window.id]._tmpCounts.QuadPart,
-    //     TIMES[window.id]._frequency.QuadPart,
-    //     TIMES[window.id]._tpsCounter.QuadPart,
-    //     TIMES[window.id]._msCounter.QuadPart
-    // );
-
 }

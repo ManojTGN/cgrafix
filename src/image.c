@@ -1,6 +1,4 @@
-
-#include "grafix.h"
-#include <stdlib.h>
+#include "image.h"
 
 static int IMAGE_ID;
 grafixImage _IMAGES[MAX_IMAGE];

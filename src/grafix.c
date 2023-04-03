@@ -1,6 +1,4 @@
-
 #include "grafix.h"
-#include "time.h"
 
 static int WINDOW_ID = 0;
 static char grafixError[100];
@@ -94,7 +92,8 @@ int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
     window->id = WINDOW_ID++;
     window->height = HEIGHT;
     window->width = WIDTH;
-    
+    window->_eventLength = 0;
+
     char name[15] = "GrafixClass_";
     name[12] = '0'+window->id;
     window->_cname = name;

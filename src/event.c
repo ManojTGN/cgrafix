@@ -1,7 +1,4 @@
 #include "event.h"
-#include "grafix.h"
-
-#include <windows.h>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
     
@@ -12,6 +9,20 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 
     if(id >= MAX_WINDOW) 
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
+
+    if(WINDOWS[id]->_eventLength+1 < MAX_EVENTS){
+        WINDOWS[id]->_events[ WINDOWS[id]->_eventLength ].id = id;
+        WINDOWS[id]->_events[ WINDOWS[id]->_eventLength ].type = uMsg;
+        WINDOWS[id]->_events[ WINDOWS[id]->_eventLength ].wkeyCode = wParam;
+        WINDOWS[id]->_events[ WINDOWS[id]->_eventLength ].lkeyCode = lParam;
+
+        if(uMsg == WM_MOUSEMOVE || uMsg == WM_NCMOUSEMOVE){
+        WINDOWS[id]->_events[ WINDOWS[id]->_eventLength ].cursorX = (int)(lParam) & 0xFFFF; 
+        WINDOWS[id]->_events[ WINDOWS[id]->_eventLength ].cursorY = ((int)(lParam) >> 16) & 0xFFFF;
+        }
+        
+        WINDOWS[id]->_eventLength++;
+    }
 
     switch (uMsg){
     case WM_DESTROY:
@@ -26,9 +37,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 
 }
 
-void manageGrafixEvent(grafixWindow window){
+void manageGrafixEvent(grafixWindow window, grafixEvent** event, int* size){
     if( window.isDead ) return;
     
+    WINDOWS[window.id]->_eventLength = 0;
+
     MSG msg = { };
     while(PeekMessage(&msg, window._hwnd, 0, 0, PM_REMOVE) > 0){
 
@@ -38,5 +51,8 @@ void manageGrafixEvent(grafixWindow window){
         }
 
     }
+
+    *size = WINDOWS[window.id]->_eventLength;
+    *event = WINDOWS[window.id]->_events;
     
 }

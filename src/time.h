@@ -3,18 +3,9 @@
 #define TIME_H
 
 #include "grafix.h"
-#include <time.h>
 
 typedef struct TIME{
     int id;
-
-    // LARGE_INTEGER _startCounter;
-    // LARGE_INTEGER _endCounter;
-    // LARGE_INTEGER _frequency;
-    // LARGE_INTEGER _tmpCounts;
-    
-    // LARGE_INTEGER _tpsCounter;
-    // LARGE_INTEGER _msCounter;
 
     int _msPerFrame;
     int _limitTps;
