@@ -57,6 +57,8 @@ int createGrafixImage(grafixImage *image, const char* filePath, int fileType){
 
 void drawGrafixImage(grafixWindow window, grafixImage image, int x, int y){
 
+    if(WINDOWS[window.id] == NULL|| window.isDead) return;
+
     if(image._isInit != 1){
         setGrafixError("grafixError:Unable To Draw Image;Reason:Image Is Not Initiated;");
         return;

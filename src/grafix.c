@@ -30,7 +30,9 @@ const char* getGrafixError(){
 }
 
 void setGrafixError(char* errorMsg){
+
     strcpy(grafixError,errorMsg);
+
 }
 
 void clearGrafixError(){
@@ -41,21 +43,21 @@ void clearGrafixError(){
 
 
 void showGrafixWindow(grafixWindow window){
-    if( window.isDead ) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead ) return;
 
     ShowWindow(window._hwnd, SW_SHOWDEFAULT);
 
 }
 
 void hideGrafixWindow(grafixWindow window){
-    if( window.isDead ) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead ) return;
     
     ShowWindow(window._hwnd, SW_HIDE);
 
 }
 
 void fillGrafixWindow(grafixWindow window, grafixColor color){
-    if( window.isDead ) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead ) return;
 
     for(int i = 0; i < window.height * window.width * 3; i+=3){
         BUFFERS[window.id].frameBuffer[i] = color.green;
@@ -67,7 +69,7 @@ void fillGrafixWindow(grafixWindow window, grafixColor color){
 
 
 void updateGrafixWindow(grafixWindow window){
-    if( window.isDead ) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead ) return;
 
     BITMAPINFO bmi = { 0 };
     bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
@@ -163,20 +165,28 @@ int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
 
 int isGrafixWindowEnded(grafixWindow window){
 
-    return window.isDead;
+    return (WINDOWS[window.id] == NULL || window.isDead);
 
 }
 
 void endGrafixWindow(grafixWindow window){
-    if( window.isDead ) return;
+    if( WINDOWS[window.id] == NULL || window.isDead ) return;
 
-    ReleaseDC(window._hwnd, window._hdc);
+    ReleaseDC(window._hwnd, window._hdc);    
     free(BUFFERS[window.id].frameBuffer);
 
     DestroyWindow(window._hwnd);
-    free(WINDOWS[window.id]);
+    
     WINDOWS[window.id] = NULL;
+    window.isDead = 1;
+    window.height = -1;
+    window.width = -1;
+    window._eventLength = -1;
+    window._hdc = NULL;
+    window._hwnd = NULL;
+    window._cname = NULL;
 
+    PostQuitMessage(0);
 }
 
 grafixWindow* getGrafixWindow(int id){

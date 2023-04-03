@@ -24,21 +24,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
         WINDOWS[id]->_eventLength++;
     }
 
-    switch (uMsg){
-    case WM_DESTROY:
-    {
-        WINDOWS[id]->isDead = 1;
-        PostQuitMessage(0);
-        return 0;
-    }
-    }
-
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 
 }
 
 void manageGrafixEvent(grafixWindow window, grafixEvent** event, int* size){
-    if( window.isDead ) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead ) return;
     
     WINDOWS[window.id]->_eventLength = 0;
 

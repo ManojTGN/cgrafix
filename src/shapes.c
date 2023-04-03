@@ -1,7 +1,7 @@
 #include "shapes.h"
 
 void _setPixel(grafixWindow window, int x, int y, grafixColor color){
-    if(window.isDead  || x >= window.width || y >= window.height || x < 0 || y < 0) return;
+    if(WINDOWS[window.id] == NULL|| window.isDead  || x >= window.width || y >= window.height || x < 0 || y < 0) return;
 
     int index = (x + y * window.width) * 3;
     BUFFERS[window.id].frameBuffer[index] = color.blue;
@@ -11,7 +11,7 @@ void _setPixel(grafixWindow window, int x, int y, grafixColor color){
 }
 
 void drawGrafixLine(grafixWindow window, int x0, int y0, int x1, int y1, grafixColor color){
-    if( window.isDead ) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead ) return;
 
     int dx = abs(x1 - x0);
     int dy = abs(y1 - y0);
@@ -37,7 +37,7 @@ void drawGrafixLine(grafixWindow window, int x0, int y0, int x1, int y1, grafixC
 }
 
 void drawGrafixRect(grafixWindow window, int x, int y, int width, int height, grafixColor color, int fillMode, int owidth){
-    if( window.isDead || fillMode == FM_EMPTY) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead || fillMode == FM_EMPTY) return;
 
     if(x >= window.width || y >= window.height || x < 0 || y < 0) return;
 
@@ -66,7 +66,7 @@ void drawGrafixRect(grafixWindow window, int x, int y, int width, int height, gr
 }
 
 void drawGrafixCircle(grafixWindow window, int xc, int yc, int r, grafixColor color, int fillMode, int owidth){
-    if( window.isDead || fillMode == FM_EMPTY) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead || fillMode == FM_EMPTY) return;
 
     int x = 0;
     int y = r;
@@ -125,14 +125,13 @@ void drawGrafixCircle(grafixWindow window, int xc, int yc, int r, grafixColor co
             }
         }
 
-
         return;
     }
 
 }
 
 void drawGrafixText(grafixWindow window, int x, int y, char* text, int fontSize, grafixColor color){
-    if( window.isDead ) return;
+    if( WINDOWS[window.id] == NULL|| window.isDead ) return;
 
     HDC hdc = CreateCompatibleDC(NULL);
 
