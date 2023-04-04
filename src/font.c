@@ -33,33 +33,9 @@ void drawGrafixText(grafixWindow window, grafixFont font, int x, int y, char* te
     FT_GlyphSlot slot = font.face->glyph;
     FT_Vector pen = {0, 0};
 
-    int text_length = strlen(text);
-    for (int i = 0; i < text_length; ++i) {
-        if (FT_Load_Char(font.face, text[i], FT_LOAD_RENDER)) {
-            continue;
-        }
-
-        pen.x += slot->advance.x >> 6;
-        pen.y += slot->advance.y >> 6;
-
-        if (pen.x > width) {
-            width = pen.x;
-        }
-        if (pen.y > height) {
-            height = pen.y;
-        }
-    }
-
-    unsigned char* buffer = (unsigned char*)malloc(width * height * sizeof(unsigned char));
-    if (!buffer) {
-        setGrafixError("grafixError:Unable To Create Buffer;reason:No Memory Available For Buffer;");
-        return;
-    }
-    memset(buffer, 0, width * height * sizeof(unsigned char));
-
     pen.x = 0;
     pen.y = 0;
-    for (int i = 0; i < text_length; ++i) {
+    for (int i = 0; i < strlen(text); ++i) {
         if (FT_Load_Char(font.face, text[i], FT_LOAD_RENDER)) {
             continue;
         }
@@ -67,10 +43,7 @@ void drawGrafixText(grafixWindow window, grafixFont font, int x, int y, char* te
         FT_Bitmap bitmap = slot->bitmap;
         for (int _y = 0; _y < bitmap.rows; ++_y) {
             for (int _x = 0; _x < bitmap.width; ++_x) {
-                _setPixel(window,x+_x+pen.x,y+_y+pen.y,(grafixColor){bitmap.buffer[y * bitmap.width + x],0,0});
-                // BUFFERS[window.id].frameBuffer[(pen.y + y) * width + pen.x + x] = bitmap.buffer[(y * bitmap.width + x) ];
-                // BUFFERS[window.id].frameBuffer[((pen.y + y) * width + pen.x + x)+1] = bitmap.buffer[(y * bitmap.width + x)+1 ];
-                // BUFFERS[window.id].frameBuffer[((pen.y + y) * width + pen.x + x)+2] = bitmap.buffer[(y * bitmap.width + x)+2 ];
+                _setPixel(window,x+_x+pen.x,y+_y+pen.y,(grafixColor){bitmap.buffer[_y * bitmap.width + _x],bitmap.buffer[_y * bitmap.width + _x],bitmap.buffer[_y * bitmap.width + _x]});
             }
         }
 
