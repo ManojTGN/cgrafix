@@ -1,17 +1,12 @@
 #include "image.h"
 
-static int IMAGE_ID;
-grafixImage _IMAGES[MAX_IMAGE];
-
 int createGrafixImage(grafixImage *image, const char* filePath, int fileType){
     image->_isInit = 0;
-    image->id = IMAGE_ID++;
     image->fileType = fileType;
 
     FILE *image_file;
     image_file = fopen(filePath, "rb");
     if (image_file == NULL){
-        IMAGE_ID--;
         setGrafixError("grafixError:Unable To Load Image;Reason:No File Found");
         return 0;
     }
@@ -27,7 +22,6 @@ int createGrafixImage(grafixImage *image, const char* filePath, int fileType){
     
     image->_frame = (unsigned char*) malloc(image->width * image->height * 3);
     if(image->_frame == NULL){
-        IMAGE_ID--;
         fclose(image_file);
         setGrafixError("grafixError:Unable To Load Image;Reason:No Memory Available");
         return 0;

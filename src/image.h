@@ -11,7 +11,6 @@
 #define FT_JPG 2
 
 typedef struct IMAGE {
-    int id;
 
     char* filePath;
     int fileType;
@@ -27,8 +26,6 @@ typedef struct IMAGE {
 
 } grafixImage;
 
-static int IMAGE_ID;
-extern grafixImage _IMAGES[MAX_IMAGE];
 
 int createGrafixImage(grafixImage *image,  const char* filePath, int fileType);
 void drawGrafixImage(grafixWindow window, grafixImage image, int x, int y);

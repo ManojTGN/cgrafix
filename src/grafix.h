@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #endif /* _DEPENDENCIES_H_ */
 
@@ -18,6 +20,7 @@
 #include "event.h"
 #include "time.h"
 #include "image.h"
+#include "font.h"
 
 #endif /* _GRAFIX_DEPENDENCIES_H_ */
 

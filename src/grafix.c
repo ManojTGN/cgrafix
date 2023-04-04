@@ -155,9 +155,6 @@ int createGrafixWindow(grafixWindow* window, int WIDTH, int HEIGHT, char* NAME){
     time._waitCounter = 0;
     time._startCounter = clock();
     
-    // QueryPerformanceCounter(&TIMES[time.id]._startCounter);
-    // QueryPerformanceFrequency(&TIMES[time.id]._frequency);
-
     TIMES[time.id] = time;
 
 }
