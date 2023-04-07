@@ -11,7 +11,7 @@ void grafixInit(){
 
     WINDOW_ID = 0;
     grafixInitiated = 1;
-    printf("Initiated Grafix!\n");
+    // printf("Initiated Grafix!\n");
     
 }
 
