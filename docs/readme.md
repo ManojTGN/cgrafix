@@ -21,6 +21,8 @@ subdirectory.
 - [Shapes](README-Shapes.md)
 - [Events](README-Events.md)
 - [Time](README-Time.md)
+- [Image](README-Image.md)
+- [Font](README-Font.md)
 
 - [Examples](https://github.com/ManojTGN/cgrafix/tree/main/examples)
 
