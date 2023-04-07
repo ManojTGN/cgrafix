@@ -20,7 +20,7 @@ typedef struct TIME{
 extern _grafixTIME TIMES[MAX_WINDOW];
 
 int getGrafixFPS(grafixWindow window);
-void tickGrafix(grafixWindow window, int);
+void tickGrafix(grafixWindow window, int tick);
 void waitGrafixWindow(grafixWindow window, int millisecond);
 void updateGrafixTime(grafixWindow window);
 

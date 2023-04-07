@@ -188,6 +188,8 @@ void endGrafixWindow(grafixWindow window){
 
 grafixWindow* getGrafixWindow(int id){
 
+    if(id >= MAX_WINDOW || WINDOWS[id] == NULL) return NULL;
+
     return WINDOWS[id];
 
 }

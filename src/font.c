@@ -43,6 +43,7 @@ void drawGrafixText(grafixWindow window, grafixFont font, int x, int y, char* te
         FT_Bitmap bitmap = slot->bitmap;
         for (int _y = 0; _y < bitmap.rows; ++_y) {
             for (int _x = 0; _x < bitmap.width; ++_x) {
+                if(bitmap.buffer[_y * bitmap.width + _x] <= 0) continue;
                 _setPixel(window,x+_x+pen.x,y+_y+pen.y,(grafixColor){bitmap.buffer[_y * bitmap.width + _x],bitmap.buffer[_y * bitmap.width + _x],bitmap.buffer[_y * bitmap.width + _x]});
             }
         }

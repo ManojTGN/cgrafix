@@ -4,7 +4,7 @@
 
 #include "grafix.h"
 
-#define MAX_IMAGE 100
+#define M_PI 3.14159265358979323846
 
 #define FT_BMP 0
 #define FT_PNG 1
@@ -29,5 +29,6 @@ typedef struct IMAGE {
 
 int createGrafixImage(grafixImage *image,  const char* filePath, int fileType);
 void drawGrafixImage(grafixWindow window, grafixImage image, int x, int y);
+void rotateGrafixImage(grafixImage *image, float angle);
 
 #endif /* IMAGE_H */
