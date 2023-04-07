@@ -4,7 +4,7 @@ drawGrafixLine(grafixWindow window, int x1, int y1, int x2, int y2, grafixColor 
 ```
 Draws a line on the frame from (x1,y1) to (x2,y2) with fixed borderWidth 1
 
-`window` - Pointer of the window | `grafixWindow` <br>
+`window` - window object | `grafixWindow` <br>
 `x1` - x position of the line 1 | `int` <br>
 `y1` - y position of the line 1 | `int` <br>
 `x2` - x position of the line 2 | `int` <br>
@@ -25,7 +25,7 @@ drawGrafixRect(grafixWindow window, int x, int y, int width, int height, grafixC
 ```
 Draws a rectangle to the frame starting from the top left corner of the rectangle with (x,y) and to the bottom left corner with ( x + width, y + height) with a borderWidth and can be filled with the fillmode
 
-`window` - Pointer of the window | `grafixWindow` <br>
+`window` - window object | `grafixWindow` <br>
 `x` - x position of the rectangle (top left) | `int` <br>
 `y` - y position of the rectangle (top left) | `int` <br>
 `width` - width of the rectangle | `int` <br>
@@ -51,7 +51,7 @@ drawGrafixCircle(grafixWindow window, int x, int y, int radius, grafixColor colo
 ```
 Draws a circle to the frame with a center point (x,y) with the specified radius
 
-`window` - Pointer of the window | `grafixWindow` <br>
+`window` - window object | `grafixWindow` <br>
 `x` - x position of the circle (top left) | `int` <br>
 `y` - y position of the circle (top left) | `int` <br>
 `radius` - radius of the circle | `int` <br>
