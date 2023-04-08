@@ -3,5 +3,4 @@ test/
 build/
 .vscode/
 
-makefile
 cmakelists.txt
