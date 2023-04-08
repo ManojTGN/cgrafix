@@ -31,4 +31,4 @@ issue in the [cGrafix/issue](https://github.com/ManojTGN/cgrafix/issues).
 
 Enjoy!
 
-ManojTGN <mailto:manojanguraja@gmail.com>
+ManojTGN
