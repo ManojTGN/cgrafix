@@ -2,7 +2,7 @@
 ```c
 createGrafixWindow ( grafixWindow* window, int width, int height, char* name )
 ```
-Create dynamic memory for the window handler and frame buffer then add the window to the `grafix::WINDOWS` array to manage it properly. if fails at creating memory for the window or frame buffer it results in 0.
+Create dynamic memory for the window handler and frame buffer then add the window to the `grafix::WINDOWS` array to manage it properly. if fails at creating memory for the window or frame buffer it results in 0. 
 
 `window` - Pointer of the window | `grafixWindow` <br>
 `width` - Width of the window | `int` <br>
